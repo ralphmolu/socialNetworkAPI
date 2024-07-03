@@ -15,7 +15,7 @@ module.exports = {
         try {
             const thought = await Thought.findOne({ _id: req.params.thoughtId });
             if(!thought){
-                res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
+                return res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
             }
             res.json(thought);
 
@@ -46,7 +46,7 @@ module.exports = {
                 { runValidators: true, new: true}
             );
             if(!thought){
-                res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
+                return res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
             }
             res.json(thought);
         } catch (err) {
@@ -58,7 +58,7 @@ module.exports = {
         try {
             const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
             if(!thought){
-                res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
+                return res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
             }
             await User.findOneAndUpdate( // ensure deletion of deleted thought from user's thoughts
                 { thoughts: req.params.thoughtId },
@@ -78,7 +78,7 @@ module.exports = {
                 {runValidators: true, new: true}
             );
             if(!thought){
-                res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
+                return res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
             }
             res.json(thought);
         } catch (err) {
@@ -94,10 +94,11 @@ module.exports = {
                 {runValidators: true, new: true}
             );
             if(!thought){
-                res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
+               return res.status(404).json({ message: 'No thought found with that ID! Please try again. ' });
             }
             res.json(thought);
         } catch (err) {
+            console.error("Error deleting reaction:", err);
             res.status(500).json(err);
         }
     }

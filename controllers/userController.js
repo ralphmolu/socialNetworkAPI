@@ -7,14 +7,14 @@ module.exports = {
             const users = await User.find();
             res.json(users);
         } catch (err) {
-            res.status(500) / json(err);
+            res.status(500).json(err);
         }
     },
 
     async getSingleUser(req, res) {
         try {
             const user = await User.findOne({ _id: req.params.userId }).populate('thoughts').populate('friends');
-            if (!User) {
+            if (!user) {
                 return res.status(404).json({ message: 'No user found with that id! Please try again.' });
             }
             res.json(user);
@@ -35,7 +35,7 @@ module.exports = {
     async updateUser(req, res) {
         try {
             const user = await User.findOneAndUpdate(
-                { _id: re.params.userId },
+                { _id: req.params.userId },
                 { $set: req.body },
                 { runValidators: true, new: true }
             )
@@ -80,7 +80,7 @@ module.exports = {
 
     async removeFriend(req, res) {
         try {
-            const user = await User.findOneAndDelete(
+            const user = await User.findOneAndUpdate(
                 { _id: req.params.userId },
                 { $pull: { friends: req.params.friendId } },
                 { new: true }
