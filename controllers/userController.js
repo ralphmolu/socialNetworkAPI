@@ -1,4 +1,4 @@
-const { ADDRCONFIG } = require('dns');
+
 const { User, Thought } = require('../models');
 
 module.exports = {
